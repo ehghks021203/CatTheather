@@ -10,13 +10,17 @@ public class GameManaer : MonoBehaviour {
     public static GameManaer Instance { get; private set;}
     void Awake() => Instance = this;
 
-
+    // 인게임 UI 및 텍스트
+    [Header("InGame UI & Text")]
     [SerializeField] private Image gagebarFillUI;
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private TMP_Text scoreTMP;
     [SerializeField] private TMP_Text guestTMP;
+    [SerializeField] private TMP_Text gainFishTMP;
+    [SerializeField] private TMP_Text gainCanTMP;
 
     // 결과창 텍스트
+    [Header("Result Page Text")]
     [SerializeField] private TMP_Text ticketScoreTMP;
     [SerializeField] private TMP_Text foodScoreTMP;
     [SerializeField] private TMP_Text drinkScoreTMP;
@@ -31,12 +35,17 @@ public class GameManaer : MonoBehaviour {
     private int drinkScore = 0;
     private int thiefScore = 0;
 
+    // 재화 변수
+    private int gainFish = 0;
+    private int gainCan = 0;
+
     // 정확도 계산을 위한 변수
     public int totalFood = 0;
     public int correctFood = 0;
     
     public int combo = 0;
     public bool showGagebar = false;
+    public bool isGameStart = true;
     public bool isGameOver = false;
     private bool gameOverPanelOpen = false;
     private int curGuest = -1;
@@ -47,6 +56,10 @@ public class GameManaer : MonoBehaviour {
         // 점수 표시
         scoreTMP.text = totalScore.ToString();
         guestTMP.text = GuestList.Instance.currentGuestCount.ToString();
+
+        // 획득 재화 표시
+        gainFishTMP.text = "+ " + gainFish.ToString();
+        gainCanTMP.text = "+ " + gainCan.ToString();
 
         // 손님 대기시간 게이지바 표시
         if (showGagebar) {
@@ -107,6 +120,14 @@ public class GameManaer : MonoBehaviour {
         combo = 0;
     }
 
+    public void GainFish(int gain) {
+        gainFish += gain;
+    }
+
+    public void GainCan(int gain) {
+        gainCan += gain;
+    }
+
     public void GamePause(bool isPause) {
         if (isPause) { Time.timeScale = 0; }
         else { Time.timeScale = 1; }
@@ -123,6 +144,7 @@ public class GameManaer : MonoBehaviour {
     }
 
     public IEnumerator GameOverAnim() {
+        AuthUser.Instance.GainUserGoods(gainFish, gainCan);
         gameOverUI.SetActive(true);
         float accuracy = totalFood == 0 ? 0 : (float) correctFood/totalFood * 100;
 

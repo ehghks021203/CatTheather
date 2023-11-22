@@ -6,27 +6,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class HttpServerBase<T> : MonoBehaviour where T : MonoBehaviour {
-    private static T instance;
-
-    public static T Instance {
-        get {
-            if (instance == null) {
-                GameObject obj;
-                obj = GameObject.Find(typeof(T).Name);
-                if (obj == null) {
-                    obj = new GameObject(typeof(T).Name);
-                    instance = obj.AddComponent<T>();
-                } else {
-                    instance = obj.GetComponent<T>();
-                }
-            }
-            return instance;
-        }
-    }
-
-    protected virtual void Awake() => DontDestroyOnLoad(gameObject);
-    
+public class HttpServerBase : MonoBehaviour {
     // 통신 결과를 담기위한 클래스
     public class Result {
         private string json;            // 서버 응답 값 (json)

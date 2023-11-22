@@ -12,7 +12,7 @@ public class FoodList : MonoBehaviour {
     Queue<Food> drinkObjectQueue = new Queue<Food>();
     public int [] drinkDisplay = new int[3];
 
-    private void Start() {
+    public void SpawnStart() {
         Init(3);
         StartCoroutine(FoodSpawn());
         StartCoroutine(DrinkSpawn());
@@ -90,8 +90,9 @@ public class FoodList : MonoBehaviour {
         while (true) {
             if (foodObjectQueue.Count > 0 && !GameManaer.Instance.isGameOver) {
                 var food = GetFood("food");
-                food.id = Random.Range(0,InGameDataManager.Instance.MAX_FOOD_ID);
+                food.id = Random.Range(0,InGameDataManager.Instance.inGameData.MAX_FOOD_ID);
                 foodDisplay[food.index] = food.id;
+                food.price = InGameDataManager.Instance.GetFoodPrice(food.id);
                 food.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetFoodImage(food.id);
                 food.GetComponent<SpriteRenderer>().sortingOrder = food.index;
             }
@@ -104,8 +105,9 @@ public class FoodList : MonoBehaviour {
             // guestObjectQueue에 
             if (drinkObjectQueue.Count > 0 && !GameManaer.Instance.isGameOver) {
                 var drink = GetFood("drink");
-                drink.id = Random.Range(0,InGameDataManager.Instance.MAX_DRINK_ID);
+                drink.id = Random.Range(0,InGameDataManager.Instance.inGameData.MAX_DRINK_ID);
                 drinkDisplay[drink.index] = drink.id;
+                drink.price = InGameDataManager.Instance.GetFoodPrice(drink.id);
                 drink.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetDrinkImage(drink.id);
                 drink.GetComponent<SpriteRenderer>().sortingOrder = drink.index;
             }

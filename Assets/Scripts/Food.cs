@@ -7,6 +7,7 @@ public class Food : MonoBehaviour {
     public int id { get; set; }         // 음식 id
     public int index { get; set; }      // 몇 번째 칸에서 등장하는지
     public string type { get; set; }    // 음식인지 음료인지
+    public int price { get; set; }
 
     private float offsetX = -3.0f;
     private float offsetY = -0.9f;
@@ -50,6 +51,7 @@ public class Food : MonoBehaviour {
                         collidGuest.isWantFood = true;
                         collidGuest.requestFood.color = Color.gray;
                         GameManaer.Instance.PlusScore(200, type);
+                        GameManaer.Instance.GainFish(price);
                         DestroyFood();
                     }
                     else {
@@ -65,6 +67,7 @@ public class Food : MonoBehaviour {
                         collidGuest.isWantDrink = true;
                         collidGuest.requestDrink.color = Color.gray;
                         GameManaer.Instance.PlusScore(200, type);
+                        GameManaer.Instance.GainFish(price);
                         DestroyFood();
                     }
                     else {

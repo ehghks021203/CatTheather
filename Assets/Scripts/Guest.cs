@@ -8,7 +8,12 @@ public class Guest : MonoBehaviour {
     public int wantFood { get; set; }       // 손님의 요구 음식
     public int wantDrink { get; set; }      // 손님의 요구 음료
     public int ticket { get; set; }         // 손님의 상영관 번호
-    public int returnScore = 1000;
+    public int gainFish { get; set; }
+    public int gainCan { get; set; }
+    public int returnScore { get; set; }
+
+    public Sprite frontImg { get; set; }
+    public Sprite backImg { get; set; }
 
     public bool isWantFood = false;
     public bool isWantDrink = false;
@@ -43,6 +48,7 @@ public class Guest : MonoBehaviour {
     // 손님을 터치 했을 때
     private void OnMouseDown() {
         if (canDrag) {
+            GetComponent<SpriteRenderer>().sprite = backImg;
             GetComponent<SpriteRenderer>().sortingOrder = 10;
         }
     }
@@ -60,15 +66,18 @@ public class Guest : MonoBehaviour {
         if (canDrag) {
             if (collidDoorNum == 0) {
                 transform.position = new Vector2(0.0f, -1.0f);
+                GetComponent<SpriteRenderer>().sprite = frontImg;
                 GetComponent<SpriteRenderer>().sortingOrder = 0;
             }
             else if (collidDoorNum == ticket && isWantFood && isWantDrink) {
                 // 원하는 음식 및 음료를 모두 제공하고 올바른 상영관 입구로 손님을 안내하였다면
                 GameManaer.Instance.showGagebar = false;
-                GameManaer.Instance.PlusScore(returnScore, "ticket");
+                GameManaer.Instance.PlusScore(returnScore, "ticket");   // 점수 증가
+                GameManaer.Instance.GainFish(gainFish);
+                GameManaer.Instance.GainCan(gainCan);
                 DestroyGuest(); // 손님 제거
 
-                // 점수 증가
+                
             }
             else {
                 GameManaer.Instance.isGameOver = true;
@@ -108,7 +117,7 @@ public class Guest : MonoBehaviour {
         // 3분의 2 확률로 음식 주문
         if (Random.Range(0, 3) != 0) {
             // 음식 진열대에 올라와 있는 음식 중 하나 랜덤 선택
-            wantFood = FoodList.Instance.foodDisplay[Random.Range(0, InGameDataManager.Instance.MAX_FOOD_ID)];
+            wantFood = FoodList.Instance.foodDisplay[Random.Range(0, InGameDataManager.Instance.inGameData.MAX_FOOD_ID)];
             requestFood.sprite = InGameDataManager.Instance.GetFoodImage(wantFood);
             requestFood.color = Color.white;
             isWantFood = false;                 // 음식 주문이 있기 때문에 false로 설정
@@ -120,7 +129,7 @@ public class Guest : MonoBehaviour {
         // 3분의 2 확률로 음료 주문
         if (Random.Range(0, 3) != 0) {
             // 음료 진열대에 올라와 있는 음료 중 하나 랜덤 선택
-            wantDrink = FoodList.Instance.drinkDisplay[Random.Range(0, InGameDataManager.Instance.MAX_DRINK_ID)];
+            wantDrink = FoodList.Instance.drinkDisplay[Random.Range(0, InGameDataManager.Instance.inGameData.MAX_DRINK_ID)];
             requestDrink.sprite = InGameDataManager.Instance.GetDrinkImage(wantDrink);
             requestDrink.color = Color.white;
             isWantDrink = false;

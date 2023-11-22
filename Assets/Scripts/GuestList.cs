@@ -13,7 +13,7 @@ public class GuestList : MonoBehaviour {
     public int totalGuestCount = 0;
     
     
-    private void Start() {
+    public void SpawnStart() {
         Init(5);
         StartCoroutine(GuestSpawn());
     }
@@ -68,8 +68,15 @@ public class GuestList : MonoBehaviour {
                 var guest = GetGuest();
                 guest.transform.position = new Vector3(0.0f, -12.0f, 1.0f);
                 guest.index = totalGuestCount;      // 손님의 번호 부여
-                guest.id = Random.Range(0, InGameDataManager.Instance.MAX_GUEST_ID);
+                guest.id = Random.Range(0, InGameDataManager.Instance.inGameData.MAX_GUEST_ID);
                 guest.ticket = Random.Range(1, 4);
+                guest.gainFish = InGameDataManager.Instance.GetGuestGainFish(guest.id);
+                guest.gainCan = InGameDataManager.Instance.GetGuestGainCan(guest.id);
+                guest.returnScore = InGameDataManager.Instance.GetGuestScore(guest.id);
+                guest.frontImg = InGameDataManager.Instance.GetGuestFrontImage(guest.id);
+                guest.backImg = InGameDataManager.Instance.GetGuestBackImage(guest.id);
+                guest.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetGuestBackImage(guest.id);
+                guest.GetComponent<SpriteRenderer>().sortingOrder = guest.index;
                 totalGuestCount++;                  // 총 손님 수 + 1
             }
             yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
