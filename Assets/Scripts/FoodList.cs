@@ -90,9 +90,11 @@ public class FoodList : MonoBehaviour {
         while (true) {
             if (foodObjectQueue.Count > 0 && !GameManaer.Instance.isGameOver) {
                 var food = GetFood("food");
-                food.id = Random.Range(0,InGameDataManager.Instance.inGameData.MAX_FOOD_ID);
+                food.id = Random.Range(1, InGameDataManager.Instance.inGameData.MAX_FOOD_ID);
                 foodDisplay[food.index] = food.id;
-                food.price = InGameDataManager.Instance.GetFoodPrice(food.id);
+                food.returnScore = InGameDataManager.Instance.GetFoodScore(food.id);
+                food.gainFish = InGameDataManager.Instance.GetFoodGainFish(food.id);
+                food.gainCan = InGameDataManager.Instance.GetFoodGainCan(food.id);
                 food.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetFoodImage(food.id);
                 food.GetComponent<SpriteRenderer>().sortingOrder = food.index;
             }
@@ -105,9 +107,11 @@ public class FoodList : MonoBehaviour {
             // guestObjectQueue에 
             if (drinkObjectQueue.Count > 0 && !GameManaer.Instance.isGameOver) {
                 var drink = GetFood("drink");
-                drink.id = Random.Range(0,InGameDataManager.Instance.inGameData.MAX_DRINK_ID);
+                drink.id = Random.Range(1, InGameDataManager.Instance.inGameData.MAX_DRINK_ID);
                 drinkDisplay[drink.index] = drink.id;
-                drink.price = InGameDataManager.Instance.GetFoodPrice(drink.id);
+                drink.returnScore = InGameDataManager.Instance.GetDrinkScore(drink.id);
+                drink.gainFish = InGameDataManager.Instance.GetDrinkGainFish(drink.id);
+                drink.gainCan = InGameDataManager.Instance.GetDrinkGainCan(drink.id);
                 drink.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetDrinkImage(drink.id);
                 drink.GetComponent<SpriteRenderer>().sortingOrder = drink.index;
             }

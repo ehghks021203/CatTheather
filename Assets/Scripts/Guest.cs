@@ -48,7 +48,7 @@ public class Guest : MonoBehaviour {
     // 손님을 터치 했을 때
     private void OnMouseDown() {
         if (canDrag) {
-            GetComponent<SpriteRenderer>().sprite = backImg;
+            GetComponent<SpriteRenderer>().sprite = frontImg;
             GetComponent<SpriteRenderer>().sortingOrder = 10;
         }
     }
@@ -57,7 +57,7 @@ public class Guest : MonoBehaviour {
     private void OnMouseDrag() {
         if (canDrag) {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = mousePos;
+            transform.position = mousePos + new Vector2(0.0f, 0.8f);
         }
     }
 
@@ -66,7 +66,7 @@ public class Guest : MonoBehaviour {
         if (canDrag) {
             if (collidDoorNum == 0) {
                 transform.position = new Vector2(0.0f, -1.0f);
-                GetComponent<SpriteRenderer>().sprite = frontImg;
+                GetComponent<SpriteRenderer>().sprite = backImg;
                 GetComponent<SpriteRenderer>().sortingOrder = 0;
             }
             else if (collidDoorNum == ticket && isWantFood && isWantDrink) {
@@ -143,17 +143,21 @@ public class Guest : MonoBehaviour {
         
         // 말풍선 위에 요구사항 이미지 위치 설정
         if (wantFood == -1 && wantDrink == -1) {
-            requestTicket.transform.position = new Vector2(2.2f, 1.05f);
+            // 티켓만 표시
+            requestTicket.transform.position = new Vector2(2.4f, 0.9f);
         } else if (wantFood == -1) {
-            requestDrink.transform.position = new Vector2(1.6f, 1.05f);
-            requestTicket.transform.position = new Vector2(2.8f, 1.05f);
+            // 티켓과 음료 표시
+            requestDrink.transform.position = new Vector2(2.1f, 1.0f);
+            requestTicket.transform.position = new Vector2(2.8f, 0.9f);
         } else if (wantDrink == -1) {
-            requestFood.transform.position = new Vector2(1.6f, 1.05f);
-            requestTicket.transform.position = new Vector2(2.8f, 1.05f);
+            // 티켓과 음식 표시
+            requestFood.transform.position = new Vector2(2.1f, 1.0f);
+            requestTicket.transform.position = new Vector2(2.8f, 0.9f);
         } else {
-            requestFood.transform.position = new Vector2(1.0f, 1.05f);
-            requestDrink.transform.position = new Vector2(2.2f, 1.05f);
-            requestTicket.transform.position = new Vector2(3.4f, 1.05f);
+            // 모두 표시
+            requestFood.transform.position = new Vector2(1.8f, 1.0f);
+            requestDrink.transform.position = new Vector2(2.4f, 1.0f);
+            requestTicket.transform.position = new Vector2(3.1f, 0.9f);
         }
 
         // 요구사항 말풍선 표시

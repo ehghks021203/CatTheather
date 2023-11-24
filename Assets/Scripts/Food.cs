@@ -7,10 +7,12 @@ public class Food : MonoBehaviour {
     public int id { get; set; }         // 음식 id
     public int index { get; set; }      // 몇 번째 칸에서 등장하는지
     public string type { get; set; }    // 음식인지 음료인지
-    public int price { get; set; }
+    public int gainFish { get; set; }
+    public int gainCan { get; set; }
+    public int returnScore { get; set; }
 
     private float offsetX = -3.0f;
-    private float offsetY = -0.9f;
+    private float offsetY = -1.1f;
     private float gap = 1.1f;
     private bool canDrag = false;
     private Vector2 createPos;
@@ -48,14 +50,16 @@ public class Food : MonoBehaviour {
                 if (type == "food") {
                     Debug.Log(collidGuest.wantFood);
                     if (collidGuest.wantFood == id && !collidGuest.isWantFood) {
+                        // FOOD 점수 및 재화 획득 처리 로직
                         collidGuest.isWantFood = true;
                         collidGuest.requestFood.color = Color.gray;
-                        GameManaer.Instance.PlusScore(200, type);
-                        GameManaer.Instance.GainFish(price);
+                        GameManaer.Instance.PlusScore(returnScore, type);
+                        GameManaer.Instance.GainFish(gainFish);
+                        GameManaer.Instance.GainCan(gainCan);
                         DestroyFood();
                     }
                     else {
-                        Debug.Log(id);
+                        // 잘못된 FOOD 제공 시 로직
                         // 점수 마이너스
                         GameManaer.Instance.MinusScore(type);
                         GetComponent<SpriteRenderer>().sortingOrder = index;
@@ -64,13 +68,16 @@ public class Food : MonoBehaviour {
                 }
                 else {
                     if (collidGuest.wantDrink == id && !collidGuest.isWantDrink) {
+                        // DRINK 점수 및 재화 획득 처리 로직
                         collidGuest.isWantDrink = true;
                         collidGuest.requestDrink.color = Color.gray;
-                        GameManaer.Instance.PlusScore(200, type);
-                        GameManaer.Instance.GainFish(price);
+                        GameManaer.Instance.PlusScore(returnScore, type);
+                        GameManaer.Instance.GainFish(gainFish);
+                        GameManaer.Instance.GainCan(gainCan);
                         DestroyFood();
                     }
                     else {
+                        // 잘못된 FOOD 제공 시 로직
                         // 점수 마이너스
                         GameManaer.Instance.MinusScore(type);
                         GetComponent<SpriteRenderer>().sortingOrder = index;

@@ -28,43 +28,58 @@ public class InGameDataManager : HttpServerBase {
         GetInGameData();
     }
 
+    #region GET_FOOD_DATA
     // 음식의 id에 맞는 이미지 리턴
     public Sprite GetFoodImage(int index) {
         return inGameData.food_img[index];
     }
 
-    public int GetFoodPrice(int index) {
-        return int.Parse(inGameData.food_data[index]["price"].ToString());
+    public int GetFoodScore(int index) {
+        return int.Parse(inGameData.food_data[index]["gain_score"].ToString());
     }
 
+    public int GetFoodGainFish(int index) {
+        return int.Parse(inGameData.food_data[index]["gain_fish"].ToString());
+    }
+
+    public int GetFoodGainCan(int index) {
+        return int.Parse(inGameData.food_data[index]["gain_can"].ToString());
+    }
+    #endregion
+
+    #region GET_DRINK_DATA
     // 음료의 id에 맞는 이미지 리턴
     public Sprite GetDrinkImage(int index) {
         return inGameData.drink_img[index];
     }
-
-    public int GetDrinkPrice(int index) {
-        return int.Parse(inGameData.drink_data[index]["price"].ToString());
+    public int GetDrinkScore(int index) {
+        return int.Parse(inGameData.drink_data[index]["gain_score"].ToString());
     }
+    public int GetDrinkGainFish(int index) {
+        return int.Parse(inGameData.drink_data[index]["gain_fish"].ToString());
+    }
+    public int GetDrinkGainCan(int index) {
+        return int.Parse(inGameData.drink_data[index]["gain_can"].ToString());
+    }
+    #endregion
 
+    # region GET_GUEST_DATA
     public Sprite GetGuestFrontImage(int index) {
         return inGameData.guest_f_img[index];
     }
-
     public Sprite GetGuestBackImage(int index) {
         return inGameData.guest_b_img[index];
     }
-
     public int GetGuestScore(int index) {
-        return int.Parse(inGameData.guest_data[index]["score"].ToString());
+        return int.Parse(inGameData.guest_data[index]["gain_score"].ToString());
     }
-
     public int GetGuestGainFish(int index) {
         return int.Parse(inGameData.guest_data[index]["gain_fish"].ToString());
     }
-
     public int GetGuestGainCan(int index) {
         return int.Parse(inGameData.guest_data[index]["gain_can"].ToString());
     }
+    #endregion
 
     public Coroutine GetInGameData(Action<Result> onSucceed = null, Action<Result> onFailed = null) {
         string url = HTTPURL.SERVER_URL + HTTPURL.GET_FOOD_DATA;
