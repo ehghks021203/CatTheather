@@ -5,27 +5,30 @@ using UnityEngine;
 public class Guest : MonoBehaviour {
     public int index { get; set; }          // 몇 번째 손님인지
     public int id { get; set; }
-    public int wantFood { get; set; }       // 손님의 요구 음식
-    public int wantDrink { get; set; }      // 손님의 요구 음료
-    public int ticket { get; set; }         // 손님의 상영관 번호
     public int gainFish { get; set; }
     public int gainCan { get; set; }
     public int returnScore { get; set; }
 
+    public int wantFood;      // 손님의 요구 음식
+    public int wantDrink;      // 손님의 요구 음료
+    public int ticket;       // 손님의 상영관 번호
+    
+
     public Sprite frontImg { get; set; }
     public Sprite backImg { get; set; }
 
-    public bool isWantFood = false;
-    public bool isWantDrink = false;
+    public bool isGiveFood = false;
+    public bool isGiveDrink = false;
     private bool canDrag = false;
     private int collidDoorNum = 0;
 
 
     // 요구사항 말풍선
-    [SerializeField] private GameObject requestBoxPrefab;
-    [SerializeField] private SpriteRenderer requestTicket;
-    public SpriteRenderer requestFood;
-    public SpriteRenderer requestDrink;
+    [SerializeField] private GameObject ticketReqBoxPrefab;
+    [SerializeField] private GameObject reqBoxSPrefab;
+    [SerializeField] private GameObject reqBoxMPrefab;
+    public SpriteRenderer reqFood;
+    public SpriteRenderer reqDrink;
 
 
     private void Update() {
@@ -69,7 +72,7 @@ public class Guest : MonoBehaviour {
                 GetComponent<SpriteRenderer>().sprite = backImg;
                 GetComponent<SpriteRenderer>().sortingOrder = 0;
             }
-            else if (collidDoorNum == ticket && isWantFood && isWantDrink) {
+            else if (collidDoorNum == ticket && isGiveFood && isGiveDrink) {
                 // 원하는 음식 및 음료를 모두 제공하고 올바른 상영관 입구로 손님을 안내하였다면
                 GameManaer.Instance.showGagebar = false;
                 GameManaer.Instance.PlusScore(returnScore, "ticket");   // 점수 증가
@@ -118,50 +121,48 @@ public class Guest : MonoBehaviour {
         if (Random.Range(0, 3) != 0) {
             // 음식 진열대에 올라와 있는 음식 중 하나 랜덤 선택
             wantFood = FoodList.Instance.foodDisplay[Random.Range(0, InGameDataManager.Instance.inGameData.MAX_FOOD_ID)];
-            requestFood.sprite = InGameDataManager.Instance.GetFoodImage(wantFood);
-            requestFood.color = Color.white;
-            isWantFood = false;                 // 음식 주문이 있기 때문에 false로 설정
+            isGiveFood = false;                 // 음식 주문이 있기 때문에 false로 설정
         } else {
-            wantFood = -1;
-            requestFood.sprite = null;  // 요구 음식 이미지를 null로 설정
-            isWantFood = true;          // 음식 주문이 없기 때문에 true로 설정
+            wantFood = 0;
+            isGiveFood = true;          // 음식 주문이 없기 때문에 true로 설정
         }
         // 3분의 2 확률로 음료 주문
         if (Random.Range(0, 3) != 0) {
             // 음료 진열대에 올라와 있는 음료 중 하나 랜덤 선택
             wantDrink = FoodList.Instance.drinkDisplay[Random.Range(0, InGameDataManager.Instance.inGameData.MAX_DRINK_ID)];
-            requestDrink.sprite = InGameDataManager.Instance.GetDrinkImage(wantDrink);
-            requestDrink.color = Color.white;
-            isWantDrink = false;
+            isGiveDrink = false;
         } else {
-            wantDrink = -1;
-            requestDrink.sprite = null;
-            isWantDrink = true;
+            wantDrink = 0;
+            isGiveDrink = true;
         }
         // 손님의 티켓 번호 이미지 설정
-        requestTicket.sprite = Resources.Load<Sprite>("Images/Tickets/Ticket" + ticket.ToString());
-        
+        ticketReqBoxPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Tickets/Ticket" + ticket.ToString());
+
         // 말풍선 위에 요구사항 이미지 위치 설정
-        if (wantFood == -1 && wantDrink == -1) {
+        if (wantFood == 0 && wantDrink == 0) {
             // 티켓만 표시
-            requestTicket.transform.position = new Vector2(2.4f, 0.9f);
-        } else if (wantFood == -1) {
+            ticketReqBoxPrefab.SetActive(true);
+        } else if (wantFood == 0) {
             // 티켓과 음료 표시
-            requestDrink.transform.position = new Vector2(2.1f, 1.0f);
-            requestTicket.transform.position = new Vector2(2.8f, 0.9f);
-        } else if (wantDrink == -1) {
+            reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Drink" + wantDrink.ToString());
+            reqDrink = reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            reqBoxSPrefab.SetActive(true);
+            ticketReqBoxPrefab.SetActive(true);
+        } else if (wantDrink == 0) {
             // 티켓과 음식 표시
-            requestFood.transform.position = new Vector2(2.1f, 1.0f);
-            requestTicket.transform.position = new Vector2(2.8f, 0.9f);
+            reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Food" + wantFood.ToString());
+            reqFood = reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            reqBoxSPrefab.SetActive(true);
+            ticketReqBoxPrefab.SetActive(true);
         } else {
             // 모두 표시
-            requestFood.transform.position = new Vector2(1.8f, 1.0f);
-            requestDrink.transform.position = new Vector2(2.4f, 1.0f);
-            requestTicket.transform.position = new Vector2(3.1f, 0.9f);
+            reqBoxMPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Food" + wantFood.ToString());
+            reqFood = reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            reqBoxMPrefab.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Drink" + wantDrink.ToString());
+            reqDrink = reqBoxSPrefab.transform.GetChild(1).GetComponent<SpriteRenderer>();
+            reqBoxMPrefab.SetActive(true);
+            ticketReqBoxPrefab.SetActive(true);
         }
-
-        // 요구사항 말풍선 표시
-        requestBoxPrefab.SetActive(true);
     }
 
 
@@ -170,7 +171,9 @@ public class Guest : MonoBehaviour {
         // 변수 초기화
         canDrag = false;
         collidDoorNum = 0;
-        requestBoxPrefab.SetActive(false);
+        ticketReqBoxPrefab.SetActive(false);
+        reqBoxSPrefab.SetActive(false);
+        reqBoxMPrefab.SetActive(false);
         
         // 손님 오브젝트를 GuestList에 다시 돌려줌. (재시용을 위함)
         GuestList.Instance.ReturnGuest(this);

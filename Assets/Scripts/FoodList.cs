@@ -76,10 +76,10 @@ public class FoodList : MonoBehaviour {
         obj.transform.SetParent(transform);
         if (obj.type == "food") {
             foodObjectQueue.Enqueue(obj);
-            foodDisplay[obj.index] = -1;
+            foodDisplay[obj.index] = 0;
         } else {
             drinkObjectQueue.Enqueue(obj);
-            drinkDisplay[obj.index] = -1;
+            drinkDisplay[obj.index] = 0;
         }
     }
     

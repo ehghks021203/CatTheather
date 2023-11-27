@@ -49,10 +49,10 @@ public class Food : MonoBehaviour {
             if (collidGuest != null) {
                 if (type == "food") {
                     Debug.Log(collidGuest.wantFood);
-                    if (collidGuest.wantFood == id && !collidGuest.isWantFood) {
+                    if (collidGuest.wantFood == id && !collidGuest.isGiveFood) {
                         // FOOD 점수 및 재화 획득 처리 로직
-                        collidGuest.isWantFood = true;
-                        collidGuest.requestFood.color = Color.gray;
+                        collidGuest.isGiveFood = true;
+                        collidGuest.reqFood.color = Color.gray;
                         GameManaer.Instance.PlusScore(returnScore, type);
                         GameManaer.Instance.GainFish(gainFish);
                         GameManaer.Instance.GainCan(gainCan);
@@ -67,10 +67,10 @@ public class Food : MonoBehaviour {
                     }
                 }
                 else {
-                    if (collidGuest.wantDrink == id && !collidGuest.isWantDrink) {
+                    if (collidGuest.wantDrink == id && !collidGuest.isGiveDrink) {
                         // DRINK 점수 및 재화 획득 처리 로직
-                        collidGuest.isWantDrink = true;
-                        collidGuest.requestDrink.color = Color.gray;
+                        collidGuest.isGiveDrink = true;
+                        collidGuest.reqDrink.color = Color.gray;
                         GameManaer.Instance.PlusScore(returnScore, type);
                         GameManaer.Instance.GainFish(gainFish);
                         GameManaer.Instance.GainCan(gainCan);
