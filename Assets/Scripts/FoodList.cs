@@ -92,10 +92,10 @@ public class FoodList : MonoBehaviour {
                 var food = GetFood("food");
                 food.id = Random.Range(1, InGameDataManager.Instance.inGameData.MAX_FOOD_ID);
                 foodDisplay[food.index] = food.id;
-                food.returnScore = InGameDataManager.Instance.GetFoodScore(food.id);
-                food.gainFish = InGameDataManager.Instance.GetFoodGainFish(food.id);
-                food.gainCan = InGameDataManager.Instance.GetFoodGainCan(food.id);
-                food.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetFoodImage(food.id);
+                food.returnScore = InGameDataManager.Instance.GetFoodScore(food.id - 1);
+                food.gainFish = InGameDataManager.Instance.GetFoodGainFish(food.id - 1);
+                food.gainCan = InGameDataManager.Instance.GetFoodGainCan(food.id - 1);
+                food.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetFoodImage(food.id - 1);
                 food.GetComponent<SpriteRenderer>().sortingOrder = food.index;
             }
             yield return new WaitForSeconds(0.2f);
@@ -109,10 +109,10 @@ public class FoodList : MonoBehaviour {
                 var drink = GetFood("drink");
                 drink.id = Random.Range(1, InGameDataManager.Instance.inGameData.MAX_DRINK_ID);
                 drinkDisplay[drink.index] = drink.id;
-                drink.returnScore = InGameDataManager.Instance.GetDrinkScore(drink.id);
-                drink.gainFish = InGameDataManager.Instance.GetDrinkGainFish(drink.id);
-                drink.gainCan = InGameDataManager.Instance.GetDrinkGainCan(drink.id);
-                drink.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetDrinkImage(drink.id);
+                drink.returnScore = InGameDataManager.Instance.GetDrinkScore(drink.id - 1);
+                drink.gainFish = InGameDataManager.Instance.GetDrinkGainFish(drink.id - 1);
+                drink.gainCan = InGameDataManager.Instance.GetDrinkGainCan(drink.id - 1);
+                drink.GetComponent<SpriteRenderer>().sprite = InGameDataManager.Instance.GetDrinkImage(drink.id - 1);
                 drink.GetComponent<SpriteRenderer>().sortingOrder = drink.index;
             }
             yield return new WaitForSeconds(0.1f);

@@ -45,7 +45,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083844924603604078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -81,7 +81,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 2.5}
+  m_Size: {x: 1.8, y: 2.1}
   m_EdgeRadius: 0
 --- !u!50 &2083844924603604065
 Rigidbody2D:
@@ -174,13 +174,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd702587a96f2c4586249806523d447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWantFood: 0
-  isWantDrink: 0
+  wantFood: 0
+  wantDrink: 0
+  ticket: 0
+  guestBoxCollider: {fileID: 2083844924603604077}
+  isGiveFood: 0
+  isGiveDrink: 0
   ticketReqBoxPrefab: {fileID: 5881613733109716355}
   reqBoxSPrefab: {fileID: 2522326124193433309}
   reqBoxMPrefab: {fileID: 2083844926308497627}
-  requestFood: {fileID: 2083844925399558938}
-  requestDrink: {fileID: 2083844925237678233}
+  reqFood: {fileID: 0}
+  reqDrink: {fileID: 0}
 --- !u!1 &2083844925237678235
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Guest : MonoBehaviour {
     public int index { get; set; }          // 몇 번째 손님인지
@@ -8,28 +9,33 @@ public class Guest : MonoBehaviour {
     public int gainFish { get; set; }
     public int gainCan { get; set; }
     public int returnScore { get; set; }
-
-    public int wantFood;      // 손님의 요구 음식
-    public int wantDrink;      // 손님의 요구 음료
-    public int ticket;       // 손님의 상영관 번호
-    
-
     public Sprite frontImg { get; set; }
     public Sprite backImg { get; set; }
 
+    [Header("Guest Values")]
+    public int wantFood;      // 손님의 요구 음식
+    public int wantDrink;      // 손님의 요구 음료
+    public int ticket;       // 손님의 상영관 번호
+    [SerializeField] private BoxCollider2D guestBoxCollider;
+
+    [Header("Guest Control Values")]
     public bool isGiveFood = false;
     public bool isGiveDrink = false;
     private bool canDrag = false;
     private int collidDoorNum = 0;
 
-
     // 요구사항 말풍선
+    [Header("Request Box")]
     [SerializeField] private GameObject ticketReqBoxPrefab;
     [SerializeField] private GameObject reqBoxSPrefab;
     [SerializeField] private GameObject reqBoxMPrefab;
     public SpriteRenderer reqFood;
     public SpriteRenderer reqDrink;
 
+    private void OnEnable() {
+        transform.localScale = new Vector2(1.0f, 1.0f);
+        transform.position = new Vector2(0.0f, -12.0f);
+    }
 
     private void Update() {
         if (index == GuestList.Instance.currentGuestCount) {
@@ -78,7 +84,7 @@ public class Guest : MonoBehaviour {
                 GameManaer.Instance.PlusScore(returnScore, "ticket");   // 점수 증가
                 GameManaer.Instance.GainFish(gainFish);
                 GameManaer.Instance.GainCan(gainCan);
-                DestroyGuest(); // 손님 제거
+                StartCoroutine(DestroyGuest()); // 손님 제거
 
                 
             }
@@ -144,36 +150,47 @@ public class Guest : MonoBehaviour {
             ticketReqBoxPrefab.SetActive(true);
         } else if (wantFood == 0) {
             // 티켓과 음료 표시
-            reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Drink" + wantDrink.ToString());
             reqDrink = reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            reqDrink.sprite = Resources.Load<Sprite>("Images/Foods/Drink" + wantDrink.ToString());
+            reqDrink.color = Color.white;
             reqBoxSPrefab.SetActive(true);
             ticketReqBoxPrefab.SetActive(true);
         } else if (wantDrink == 0) {
             // 티켓과 음식 표시
-            reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Food" + wantFood.ToString());
             reqFood = reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            reqFood.sprite = Resources.Load<Sprite>("Images/Foods/Food" + wantFood.ToString());
+            reqFood.color = Color.white;
             reqBoxSPrefab.SetActive(true);
             ticketReqBoxPrefab.SetActive(true);
         } else {
             // 모두 표시
-            reqBoxMPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Food" + wantFood.ToString());
-            reqFood = reqBoxSPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
-            reqBoxMPrefab.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Foods/Drink" + wantDrink.ToString());
-            reqDrink = reqBoxSPrefab.transform.GetChild(1).GetComponent<SpriteRenderer>();
+            reqFood = reqBoxMPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            reqFood.sprite = Resources.Load<Sprite>("Images/Foods/Food" + wantFood.ToString());
+            reqFood.color = Color.white;
+            reqDrink = reqBoxMPrefab.transform.GetChild(1).GetComponent<SpriteRenderer>();
+            reqDrink.sprite = Resources.Load<Sprite>("Images/Foods/Drink" + wantDrink.ToString());
+            reqDrink.color = Color.white;
             reqBoxMPrefab.SetActive(true);
             ticketReqBoxPrefab.SetActive(true);
         }
+        // 손님 음식 받을 준비 완료 (박스콜라이더 활성화)
+        guestBoxCollider.enabled = true;
     }
 
 
     // 손님 삭제 함수
-    private void DestroyGuest() {
-        // 변수 초기화
-        canDrag = false;
-        collidDoorNum = 0;
+    IEnumerator DestroyGuest() {
         ticketReqBoxPrefab.SetActive(false);
         reqBoxSPrefab.SetActive(false);
         reqBoxMPrefab.SetActive(false);
+        transform.DOScale(new Vector3(0.0f, 0.0f, 0.0f), 0.2f).SetEase(Ease.InOutSine);
+        transform.DOMoveY(3.5f, 0.2f).SetEase(Ease.Linear);
+        yield return new WaitForSeconds(0.2f);
+        // 변수 초기화
+        canDrag = false;
+        collidDoorNum = 0;
+        
+        guestBoxCollider.enabled = false;
         
         // 손님 오브젝트를 GuestList에 다시 돌려줌. (재시용을 위함)
         GuestList.Instance.ReturnGuest(this);

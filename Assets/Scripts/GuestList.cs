@@ -66,7 +66,6 @@ public class GuestList : MonoBehaviour {
             // guestObjectQueue에 
             if (guestObjectQueue.Count > 0 && !GameManaer.Instance.isGameOver) {
                 var guest = GetGuest();
-                guest.transform.position = new Vector3(0.0f, -12.0f, 1.0f);
                 guest.index = totalGuestCount;      // 손님의 번호 부여
                 guest.id = Random.Range(1, InGameDataManager.Instance.inGameData.MAX_GUEST_ID);
                 guest.ticket = Random.Range(1, 4);
