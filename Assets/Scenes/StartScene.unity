@@ -238,8 +238,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622251783}
-  - component: {fileID: 622251785}
   - component: {fileID: 622251786}
+  - component: {fileID: 622251787}
   m_Layer: 0
   m_Name: StartSceneManager
   m_TagString: Untagged
@@ -262,7 +262,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &622251785
+--- !u!114 &622251786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622251781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519bdcb837954b94cb56f0f31414c747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &622251787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,18 +291,6 @@ MonoBehaviour:
   oauthPlayBtn: {fileID: 1862344869}
   startBtn: {fileID: 1389853463}
   uidText: {fileID: 1144450334}
---- !u!114 &622251786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622251781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 519bdcb837954b94cb56f0f31414c747, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &730927016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 622251785}
+      - m_Target: {fileID: 622251787}
         m_TargetAssemblyTypeName: StartSceneManager, Assembly-CSharp
         m_MethodName: HandlerGuestBtn
         m_Mode: 1
@@ -1624,5 +1624,5 @@ SceneRoots:
   - {fileID: 2144574834}
   - {fileID: 1628876111}
   - {fileID: 1669845285}
-  - {fileID: 504241621}
   - {fileID: 622251783}
+  - {fileID: 504241621}
