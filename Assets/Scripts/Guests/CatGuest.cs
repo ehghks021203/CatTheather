@@ -22,7 +22,6 @@ public abstract class CatGuest : MonoBehaviour {
     [Header("Cat Guest Control Values")]
     protected bool isDraggable = false;
     protected int collidDoorNum = 0;
-    protected readonly Vector2 orderCounterPos = new(0.0f, -1.75f);
     private readonly float moveSpeed = 8.0f;
     private readonly float foodOrderProbability = 0.4f;
     protected bool showGagebar = false;
@@ -119,7 +118,7 @@ public abstract class CatGuest : MonoBehaviour {
     {
         if (queueIndex == GameManager.Instance.guestSpawner.currentGuestIndex)
         {
-            var targetPos = orderCounterPos;
+            var targetPos = GameManager.Instance.guestSpawner.orderCounterPos;
             if (transform.position.y <= targetPos.y)
             {
                 transform.Translate(Vector2.up*Time.deltaTime*moveSpeed);
@@ -198,7 +197,7 @@ public abstract class CatGuest : MonoBehaviour {
 
     public virtual bool ReceiveFoodAndDrink(FoodDTO data) {
         if (data.FoodType == EnumTypes.FoodType.Food) {
-            if (data.Id == requireFoodID) {
+            if (data.Id == requireFoodID && !hasFoodBeenGained) {
                 hasFoodBeenGained = true;
                 if (requireFoodID == 0 != (requireDrinkID == 0)) {
                     smallReqBoxObj.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.gray;
@@ -216,7 +215,7 @@ public abstract class CatGuest : MonoBehaviour {
             }
         }
         else {
-            if (data.Id == requireDrinkID) {
+            if (data.Id == requireDrinkID && !hasDrinkBeenGained) {
                 hasDrinkBeenGained = true;
                 if (requireFoodID == 0 != (requireDrinkID == 0)) {
                     smallReqBoxObj.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.gray;
@@ -237,7 +236,7 @@ public abstract class CatGuest : MonoBehaviour {
 
     protected virtual void MoveToTheather() {
         if (collidDoorNum == 0) {
-            transform.position = orderCounterPos;
+            transform.position = GameManager.Instance.guestSpawner.orderCounterPos;
             catSpriteRenderer.sprite = data.BackImage;
             catSpriteRenderer.sortingOrder = 0;
         }

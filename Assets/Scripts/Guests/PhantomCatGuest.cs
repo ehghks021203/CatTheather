@@ -54,7 +54,7 @@ public class PhantomCatGuest : CatGuest
 
     protected override void MoveToTheather() {
         if (collidDoorNum == 0 && transform.position.y > throwThreshold) {
-            transform.position = orderCounterPos;
+            transform.position = GameManager.Instance.guestSpawner.orderCounterPos;
             catSpriteRenderer.sprite = data.FrontImage;
             catSpriteRenderer.sortingOrder = 0;
         }

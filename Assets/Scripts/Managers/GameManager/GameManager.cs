@@ -28,10 +28,14 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     
 
     [Header("UI & Text Components")]
+    [SerializeField] private GameObject mainCanvasObj;
     [SerializeField] private TMP_Text scoreTMP;
     [SerializeField] private TMP_Text guestTMP;
     [SerializeField] private TMP_Text gainFishTMP;
     [SerializeField] private TMP_Text gainCanTMP;
+    
+    [Header("UI & Text Prefabs")]
+    [SerializeField] private GameObject requireGoodsPrefab;
 
 
     public void GameStart() {
@@ -42,6 +46,29 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     }
     
     public void ReturnFoodValues(FoodDTO data) {
+        // Fish animation
+        if (data.GainFish != 0 && data.GainCan == 0) {
+            var obj = Instantiate(requireGoodsPrefab);
+            obj.transform.SetParent(mainCanvasObj.transform, false);
+            obj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Fish);
+        }
+        else if (data.GainFish == 0 && data.GainCan != 0) {
+            // Can animation
+            var obj = Instantiate(requireGoodsPrefab);
+            obj.transform.SetParent(mainCanvasObj.transform, false);
+            obj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Can);
+        }
+        else if (data.GainFish != 0 && data.GainCan != 0) {
+            // Fish animation
+            var fObj = Instantiate(requireGoodsPrefab);
+            fObj.transform.SetParent(mainCanvasObj.transform, false);
+            fObj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Fish, 25.0f);
+            // Can animation
+            var cObj = Instantiate(requireGoodsPrefab);
+            cObj.transform.SetParent(mainCanvasObj.transform, false);
+            cObj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Can, -25.0f);
+        }
+
         scoreData.totalScore += data.ReturnScore;
         scoreData.foodScore += data.ReturnScore;
         scoreData.totalFood++;
@@ -52,6 +79,29 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
     }
 
     public void ReturnGuestValues(GuestDTO data) {
+        if (data.GainFish != 0 && data.GainCan == 0) {
+            // Fish animation
+            var obj = Instantiate(requireGoodsPrefab);
+            obj.transform.SetParent(mainCanvasObj.transform, false);
+            obj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Fish);
+        }
+        else if (data.GainFish == 0 && data.GainCan != 0) {
+            // Can animation
+            var obj = Instantiate(requireGoodsPrefab);
+            obj.transform.SetParent(mainCanvasObj.transform, false);
+            obj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Can);
+        }
+        else if (data.GainFish != 0 && data.GainCan != 0) {
+            // Fish animation
+            var fObj = Instantiate(requireGoodsPrefab);
+            fObj.transform.SetParent(mainCanvasObj.transform, false);
+            fObj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Fish, 25.0f);
+            // Can animation
+            var cObj = Instantiate(requireGoodsPrefab);
+            cObj.transform.SetParent(mainCanvasObj.transform, false);
+            cObj.GetComponent<RequireGoodAnimation>().StartAnimation(data.GainFish, EnumTypes.GoodsType.Can, -25.0f);
+        }
+        
         scoreData.totalScore += data.ReturnScore;
         scoreData.ticketScore += data.ReturnScore;
         

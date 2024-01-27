@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GuestSpawner : MonoBehaviour {
     [SerializeField] private GameObject [] guestObjectPrefabs;  // 0: 일반 손님, 1~: 스페셜 손님
+    public readonly Vector3 orderCounterPos = new(0.0f, -1.75f, 0.0f);
     public int currentGuestIndex = 1;
     public int totalGuestIndex = 0;
     

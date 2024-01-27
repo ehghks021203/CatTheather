@@ -1,7 +1,0 @@
-id,name,score,img_f_path,img_b_path
-0,a,1000,Images/Cats/Guests/CatGuest0_front,Images/Cats/Guests/CatGuest0_back
-1,b,1000,Images/Cats/Guests/CatGuest1_front,Images/Cats/Guests/CatGuest1_back
-2,c,1000,Images/Cats/Guests/CatGuest2_front,Images/Cats/Guests/CatGuest2_back
-3,d,1600,Images/Cats/Guests/CatGuest3_front,Images/Cats/Guests/CatGuest3_back
-4,e,2400,Images/Cats/Guests/CatGuest4_front,Images/Cats/Guests/CatGuest4_back
-5,f,3000,Images/Cats/Guests/CatGuest5_front,Images/Cats/Guests/CatGuest5_back
